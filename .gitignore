@@ -1,0 +1,5 @@
+node_modules/
+packages/*/coco-mcp
+packages/*/coco-mcp.exe
+*.tgz
+.DS_Store

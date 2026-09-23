@@ -1,0 +1,54 @@
+# Publish the npm packages for a Coco MCP release. Runs by hand with a
+# version, or every hour: when the latest release of the main repository is
+# not on npm yet, it is fetched by checksum and published, four platform
+# packages then the umbrella. Nothing is built here.
+name: publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The release to publish, as X.Y.Z"
+        required: true
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - name: Version to publish
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WANTED: ${{ inputs.version }}
+        run: |
+          if [ -n "$WANTED" ]; then
+            version="$WANTED"
+          else
+            version=$(gh api repos/camiloazula/coco-mcp/releases/latest --jq .tag_name | sed 's/^v//')
+          fi
+          published=$(npm view coco-mcp version 2>/dev/null || echo none)
+          echo "release $version, on npm: $published"
+          if [ "$version" = "$published" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=$version" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Fetch the binaries
+        if: steps.pick.outputs.skip != 'true'
+        run: scripts/fetch.sh "${{ steps.pick.outputs.version }}"
+      - name: Publish
+        if: steps.pick.outputs.skip != 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: scripts/publish.sh --provenance

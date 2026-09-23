@@ -1,0 +1,35 @@
+{
+  "name": "coco-mcp",
+  "version": "0.3.1",
+  "description": "Debug MCP servers in depth, from the command line or a native window. Runs the prebuilt Coco MCP binary for this platform.",
+  "license": "MIT OR Apache-2.0",
+  "homepage": "https://github.com/camiloazula/coco-mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camiloazula/coco-mcp-npm.git"
+  },
+  "bugs": "https://github.com/camiloazula/coco-mcp/issues",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "debugger",
+    "cli",
+    "desktop",
+    "rust"
+  ],
+  "bin": {
+    "coco-mcp": "bin/coco-mcp.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "coco-mcp-darwin-arm64": "0.3.1",
+    "coco-mcp-darwin-x64": "0.3.1",
+    "coco-mcp-linux-x64": "0.3.1",
+    "coco-mcp-win32-x64": "0.3.1"
+  }
+}

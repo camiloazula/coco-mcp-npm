@@ -1,0 +1,21 @@
+{
+  "name": "coco-mcp-darwin-x64",
+  "version": "0.3.1",
+  "description": "The Coco MCP binary for macOS on x86_64. Installed by the coco-mcp package; not for direct use.",
+  "license": "MIT OR Apache-2.0",
+  "homepage": "https://github.com/camiloazula/coco-mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camiloazula/coco-mcp-npm.git"
+  },
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "coco-mcp"
+  ],
+  "preferUnplugged": true
+}

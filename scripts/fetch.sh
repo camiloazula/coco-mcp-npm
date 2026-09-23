@@ -32,6 +32,6 @@ done <<LIST
 darwin-arm64 aarch64-apple-darwin coco-mcp
 darwin-x64 x86_64-apple-darwin coco-mcp
 linux-x64 x86_64-unknown-linux-gnu coco-mcp
-win32-x64 x86_64-pc-windows-msvc coco-mcp.exe
+windows-x64 x86_64-pc-windows-msvc coco-mcp.exe
 LIST
 node "$root/scripts/set-version.js" "$version"

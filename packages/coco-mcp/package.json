@@ -30,6 +30,6 @@
     "coco-mcp-darwin-arm64": "0.3.1",
     "coco-mcp-darwin-x64": "0.3.1",
     "coco-mcp-linux-x64": "0.3.1",
-    "coco-mcp-win32-x64": "0.3.1"
+    "coco-mcp-windows-x64": "0.3.1"
   }
 }

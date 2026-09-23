@@ -3,7 +3,20 @@
 # what fetch.sh put in place. Needs `npm login` or NODE_AUTH_TOKEN.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
-for dir in darwin-arm64 darwin-x64 linux-x64 win32-x64; do
+# A version already on the registry is left alone, so a rerun after a
+# failure publishes only what is missing.
+publish() {
+  local dir="$1"; shift
+  local name version
+  name=$(node -p "require('$root/packages/$dir/package.json').name")
+  version=$(node -p "require('$root/packages/$dir/package.json').version")
+  if npm view "$name@$version" version > /dev/null 2>&1; then
+    echo "$name@$version is published already"
+    return
+  fi
   (cd "$root/packages/$dir" && npm publish --access public "$@")
+}
+for dir in darwin-arm64 darwin-x64 linux-x64 windows-x64; do
+  publish "$dir" "$@"
 done
-(cd "$root/packages/coco-mcp" && npm publish --access public "$@")
+publish coco-mcp "$@"

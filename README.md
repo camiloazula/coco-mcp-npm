@@ -10,7 +10,7 @@ npx coco-mcp
 
 `coco-mcp` is a small package that runs the prebuilt binary of this machine's
 platform. The binaries live in one package each, `coco-mcp-darwin-arm64`,
-`coco-mcp-darwin-x64`, `coco-mcp-linux-x64` and `coco-mcp-win32-x64`, listed
+`coco-mcp-darwin-x64`, `coco-mcp-linux-x64` and `coco-mcp-windows-x64`, listed
 as optional dependencies so npm installs only the matching one. Nothing is
 compiled on install.
 

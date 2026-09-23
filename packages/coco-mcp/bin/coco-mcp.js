@@ -11,7 +11,7 @@ const PACKAGES = {
   "darwin-arm64": "coco-mcp-darwin-arm64",
   "darwin-x64": "coco-mcp-darwin-x64",
   "linux-x64": "coco-mcp-linux-x64",
-  "win32-x64": "coco-mcp-win32-x64",
+  "win32-x64": "coco-mcp-windows-x64",
 };
 
 const key = `${process.platform}-${process.arch}`;

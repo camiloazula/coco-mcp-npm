@@ -1,5 +1,5 @@
 {
-  "name": "coco-mcp-win32-x64",
+  "name": "coco-mcp-windows-x64",
   "version": "0.3.1",
   "description": "The Coco MCP binary for Windows on x86_64. Installed by the coco-mcp package; not for direct use.",
   "license": "MIT OR Apache-2.0",

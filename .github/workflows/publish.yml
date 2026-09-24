@@ -1,10 +1,17 @@
-# Publish the npm packages for a Coco MCP release. Runs by hand with a
-# version, or every hour: when the latest release of the main repository is
-# not on npm yet, it is fetched by checksum and published, four platform
-# packages then the umbrella. Nothing is built here.
+# Publish the npm packages for a Coco MCP release. Runs when the main
+# repository's release workflow says a release is out, by hand with a
+# version, or every hour as a fallback: when the latest release is not on
+# npm yet, it is fetched by checksum and published, four platform packages
+# then the umbrella. Nothing is built here.
+#
+# npm trusts this workflow as the packages' publisher (trusted publishing,
+# OpenID Connect): no token is stored anywhere, and the provenance of each
+# package names this run.
 name: publish
 
 on:
+  repository_dispatch:
+    types: [release]
   workflow_dispatch:
     inputs:
       version:
@@ -17,6 +24,11 @@ permissions:
   contents: read
   id-token: write
 
+# A triggered run and the hourly one never publish at the same time.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -26,11 +38,14 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or newer; Node 22 ships 10.
+      - name: npm with trusted publishing
+        run: npm install --global npm@latest && npm --version
       - name: Version to publish
         id: pick
         env:
           GH_TOKEN: ${{ github.token }}
-          WANTED: ${{ inputs.version }}
+          WANTED: ${{ inputs.version || github.event.client_payload.version }}
         run: |
           if [ -n "$WANTED" ]; then
             version="$WANTED"
@@ -49,6 +64,4 @@ jobs:
         run: scripts/fetch.sh "${{ steps.pick.outputs.version }}"
       - name: Publish
         if: steps.pick.outputs.skip != 'true'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: scripts/publish.sh --provenance

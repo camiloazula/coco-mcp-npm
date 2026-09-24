@@ -17,6 +17,10 @@ compiled on install.
 The binaries are those of the main repository's releases, taken by checksum
 from the release's archives. `scripts/fetch.sh X.Y.Z` puts them in place and
 sets the version everywhere; `scripts/publish.sh` publishes the five
-packages; the workflow does both for each new release.
+packages; the workflow does both for each new release. It starts when the
+main repository's release workflow announces a release, and every hour as a
+fallback. npm trusts the workflow as the packages' publisher, so no token is
+stored in this repository, and each package carries provenance naming the
+run that published it.
 
 The shim and this file are under MIT OR Apache-2.0, as Coco MCP is.

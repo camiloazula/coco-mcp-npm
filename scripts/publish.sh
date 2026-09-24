@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # publish.sh: publish the four platform packages, then the umbrella, from
-# what fetch.sh put in place. Needs `npm login` or NODE_AUTH_TOKEN.
+# what fetch.sh put in place. In the publish workflow npm authenticates it as
+# the packages' trusted publisher; by hand it needs `npm login` and 2FA.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 # A version already on the registry is left alone, so a rerun after a

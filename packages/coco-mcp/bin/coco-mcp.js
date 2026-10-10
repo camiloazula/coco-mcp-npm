@@ -2,10 +2,12 @@
 // Runs the Coco MCP binary that the platform package for this machine
 // carries, with the arguments given, and exits as it exits. The binary is
 // built by the release workflow of github.com/camiloazula/coco-mcp; this
-// package only locates it.
+// package only locates it, and tells it how it was installed (COCO_INSTALL)
+// so its update notice names the right command.
 "use strict";
 
 const { spawnSync } = require("node:child_process");
+const { channel } = require("./install.js");
 
 const PACKAGES = {
   "darwin-arm64": "coco-mcp-darwin-arm64",
@@ -36,7 +38,13 @@ try {
   process.exit(2);
 }
 
-const result = spawnSync(bin, process.argv.slice(2), { stdio: "inherit" });
+const env = { ...process.env };
+try {
+  env.COCO_INSTALL = env.COCO_INSTALL || channel(__dirname, process.env);
+} catch {
+  // Without it the binary reads its own path instead.
+}
+const result = spawnSync(bin, process.argv.slice(2), { stdio: "inherit", env });
 if (result.error) {
   console.error(`coco-mcp: ${result.error.message}`);
   process.exit(2);

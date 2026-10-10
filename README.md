@@ -23,4 +23,12 @@ fallback. npm trusts the workflow as the packages' publisher, so no token is
 stored in this repository, and each package carries provenance naming the
 run that published it.
 
+The shim also tells the binary how it was installed, in `COCO_INSTALL`
+(`npm-global`, `npm-exec` for npx, `pnpm-project`, …), so the binary's
+update notice gives the command that upgrades this install
+(`npm i -g coco-mcp@latest`, `npx coco-mcp@latest`, …). It works this out
+from the package manager that started it (`npm_config_user_agent`) and the
+directory it was installed in (`packages/coco-mcp/bin/install.js`, tested by
+`node --test "test/*.test.js"`).
+
 The shim and this file are under MIT OR Apache-2.0, as Coco MCP is.
